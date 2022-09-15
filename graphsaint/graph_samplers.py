@@ -40,7 +40,7 @@ class GraphSampler:
     example sampler in pure python is provided as `NodeSamplingVanillaPython` at the
     bottom of this file.
     """
-    def __init__(self, adj_train, node_train, size_subgraph, args_preproc):  #原始
+    def __init__(self, adj_train, node_train, size_subgraph, args_preproc):  #
     #def __init__(self, adj_train, class_arr, node_train, size_subgraph, args_preproc):  #改
         """
         Inputs:
@@ -53,8 +53,8 @@ class GraphSampler:
             None
         """
         self.adj_train = adj_train
-        #self.feats = feats  #多加的，读取input的输入特征
-        #self.class_arr = class_arr   #多加的
+        #self.feats = feats  #读取input的输入特征
+        #self.class_arr = class_arr   #
         self.node_train = np.unique(node_train).astype(np.int32)
         # size in terms of number of vertices in subgraph
         self.size_subgraph = size_subgraph
@@ -435,7 +435,7 @@ class CNARW_SamplingVanillaPython_yuanshi(GraphSampler):
                 while idepth < self.size_depth:  #沿着该root，走size_depth步
                     next_node = 0
                     p = random.random()
-                    rand = random.randint(0,len(root_nbhd)-1)  #从邻居中取一个不为本身的节点？
+                    rand = random.randint(0,len(root_nbhd)-1)  #
                     next_node = root_nbhd[rand]
                     #print('next_node:',next_node)
                     
@@ -443,7 +443,7 @@ class CNARW_SamplingVanillaPython_yuanshi(GraphSampler):
                         app_v = np.random.choice(self.node_train, 1)
                         while app_v in root:
                             app_v = np.random.choice(self.node_train, 1)
-                        root = np.concatenate((root,app_v))    #是自环,拼接上新的root，是不是不应该拼接，会变成一直无限拼接吗？
+                        root = np.concatenate((root,app_v))    #
                         break
                     deg_next_root,next_root_nbhd = self.node_nbhd(next_node, self.adj_train.indices,self.adj_train.indptr)
                     if deg_next_root != None:
@@ -476,7 +476,7 @@ class CNARW_SamplingVanillaPython_yuanshi(GraphSampler):
         
 
         
-#Similarity-aware Random Walk for GNN, SARW. with feature with alph   后来12月末提的改进算法
+#Similarity-aware Random Walk for GNN, SARW. with feature with alph 
 class SARW_SamplingVanillaPython(GraphSampler):
     """
     This class is to use cnarw to define sampler.
@@ -535,14 +535,14 @@ class SARW_SamplingVanillaPython(GraphSampler):
                 while idepth < self.size_depth:  #沿着该root，走size_depth步
                     #next_node = 0
                     p = random.random()
-                    rand = random.randint(0,deg_current_node-1)  #从邻居中取一个不为本身的节点？random.randint(a,b) a <= n <= b。
+                    rand = random.randint(0,deg_current_node-1)  #random.randint(a,b) a <= n <= b。
                     next_node = current_node_nbhd[rand]  #next_node_nbhd[rand] 
                     #print('deg_current_node:',deg_current_node)
                     #print('next_node:',next_node)
                     #print('rand',rand)
                     deg_next_node, next_node_nbhd = self.node_nbhd(next_node, self.adj_train.indices,self.adj_train.indptr)
                     if deg_next_node != None:
-                        #利用Li写的跑的结果SIM，不在抽样中计算x，提前计算好
+                        #不在抽样中计算x，提前计算好
                         #print('v',v)
                         #print('self.adj_train.indptr[v]',self.adj_train.indptr[v])
                         ID = self.adj_train.indptr[current_node] + rand
@@ -573,7 +573,7 @@ class SARW_SamplingVanillaPython(GraphSampler):
                                 sim_sum = sim_sum + cos
                         SIM = sim_sum/(deg_current_node*deg_next_node)
                         #print(SIM)
-                        alfa=0.75   #alfa=1 时为原来cnarw
+                        alfa=0.75   #alfa=1 时
                         p_pick = alfa*(1-SIM) + (1-alfa)*SIM  #p_1=1-SIM, p_2=SIM
                         print(p_pick)
                         '''
@@ -614,7 +614,7 @@ class SARW_SamplingVanillaPython(GraphSampler):
 
     
     
-#Similarity-aware Random Walk for GNN, SARW. without feature, with alph   后来12月末提的改进算法
+#Similarity-aware Random Walk for GNN, SARW. without feature, with alph
 class SARW_nofeatureSamplingVanillaPython(GraphSampler):
     """
     This class is to use cnarw to define sampler.
@@ -666,7 +666,7 @@ class SARW_nofeatureSamplingVanillaPython(GraphSampler):
                 while idepth < self.size_depth:  #沿着该root，走size_depth步
                     #next_node = 0
                     p = random.random()
-                    rand = random.randint(0,deg_current_node-1)  #从邻居中取一个不为本身的节点？
+                    rand = random.randint(0,deg_current_node-1)  #
                     next_node = current_node_nbhd[rand]  #next_node_nbhd[rand]  
                     #print('next_node:',next_node)
 
@@ -677,7 +677,7 @@ class SARW_nofeatureSamplingVanillaPython(GraphSampler):
                         sim = com_Node/min(deg_current_node,deg_next_node)
                         #p_pick = com_Node/min(deg_current_node,deg_next_node)   #alfa = 0
                         #p_pick = 1 - com_Node/min(deg_current_node,deg_next_node)
-                        alfa = 0.25   #alfa=1 时为原来cnarw,alph=0为取相似的
+                        alfa = 0.25   #alfa=1 时,alph=0为取相似的
                         p_pick = alfa*(1-sim) + (1-alfa)*sim                        
                         if p_pick > p:
                             #print('next_node:',next_node)
@@ -768,7 +768,7 @@ class CNARW_SamplingVanillaPython(GraphSampler):
                 while idepth < self.size_depth:  #沿着该root，走size_depth步
                     #next_node = 0
                     p = random.random()
-                    rand = random.randint(0,deg_current_node-1)  #从邻居中取一个不为本身的节点？
+                    rand = random.randint(0,deg_current_node-1)  
                     next_node = current_node_nbhd[rand]  #next_node_nbhd[rand]  
                     #print('next_node:',next_node)
 
@@ -813,7 +813,7 @@ class CNARW_SamplingVanillaPython(GraphSampler):
 
 
 
-##cnarw修改为收敛后取点的采样算法，法一.CNARW_SamplingVanillaPython改排查无限循环,
+##cnarw修改
 class CNARWconvergence_SamplingVanillaPython(GraphSampler):
     """
     This class is to use cnarw to define sampler.
