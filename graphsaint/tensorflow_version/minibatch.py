@@ -100,11 +100,11 @@ class Minibatch:
             self.size_subg_budget = train_phases['num_root']*train_phases['depth']
             self.graph_sampler = CNARW_SamplingVanillaPython(self.adj_train,\
                 self.node_train,self.size_subg_budget,int(train_phases['num_root']),int(train_phases['depth']))
-        elif self.method_sample == 'CNARWconvergence_SamplingVanillaPython':   #CNARW修改为收敛后采样节点
+        elif self.method_sample == 'CNARWconvergence_SamplingVanillaPython':   #CNARW修改
             self.size_subg_budget = train_phases['num_root']*train_phases['depth']
             self.graph_sampler = CNARWconvergence_SamplingVanillaPython(self.adj_train,\
                 self.node_train,self.size_subg_budget,int(train_phases['num_root']),int(train_phases['depth']))
-        elif self.method_sample == 'SARW_SamplingVanillaPython':   #Similarity-aware Random Walk for GNN, SARW.后来12月末提的改进算法
+        elif self.method_sample == 'SARW_SamplingVanillaPython':   #Similarity-aware Random Walk for GNN, SARW
             self.size_subg_budget = train_phases['num_root']*train_phases['depth']
             self.graph_sampler = SARW_SamplingVanillaPython(self.adj_train,\
                 self.node_train,self.size_subg_budget,int(train_phases['num_root']),int(train_phases['depth']))  
