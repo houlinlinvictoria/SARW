@@ -453,7 +453,7 @@ class CNARW_SamplingVanillaPython(GraphSampler):
                     deg_next_root,next_root_nbhd = self.node_nbhd(next_node, self.adj_train.indices,self.adj_train.indptr)         
                     if deg_next_root != None:
                         com_Node = len(set(root_nbhd) & set(next_root_nbhd))  #求公共节点个数
-                        p_pick = 1 - com_Node/min(deg_root,deg_next_root)   #师弟写错了吧，是min 但师弟写的max
+                        p_pick = 1 - com_Node/min(deg_root,deg_next_root)   
                         if p_pick > p: 
                             node_ids.append(next_node)                    
                             idepth = idepth + 1
@@ -477,7 +477,7 @@ class CNARW_SamplingVanillaPython(GraphSampler):
             iroot = iroot + 1
         """
         #print each subgraph node id and save
-        print("node id:", len(node_ids))  #没去重没升序
+        print("node id:", len(node_ids)) 
         with open('node_id.txt', 'a') as f:
             for i in range(len(node_ids)):
                 f.write(str(node_ids[i])+',')
@@ -496,7 +496,7 @@ class CNARW_SamplingVanillaPython(GraphSampler):
         pass
 
     
-##cnarw修改为收敛后取点的采样算法，法一
+#cnarw修改为
 class CNARWconvergence_SamplingVanillaPython(GraphSampler):
     """
     This class is to use cnarw to define sampler.
@@ -561,7 +561,7 @@ class CNARWconvergence_SamplingVanillaPython(GraphSampler):
                     deg_next_root,next_root_nbhd = self.node_nbhd(next_node, self.adj_train.indices,self.adj_train.indptr)         
                     if deg_next_root != None:
                         com_Node = len(set(root_nbhd) & set(next_root_nbhd))  #求公共节点个数
-                        p_pick = 1 - com_Node/min(deg_root,deg_next_root)   #师弟写错了吧，是min 但师弟写的max
+                        p_pick = 1 - com_Node/min(deg_root,deg_next_root)   
                         if p_pick > p: 
                             node_ids_long.append(next_node)                    
                             idepth = idepth + 1
@@ -571,7 +571,7 @@ class CNARWconvergence_SamplingVanillaPython(GraphSampler):
             iroot = iroot + 1
         """
         #print each subgraph node id and save
-        print("node id:", len(node_ids))  #没去重没升序
+        print("node id:", len(node_ids))  
         with open('node_id.txt', 'a') as f:
             for i in range(len(node_ids)):
                 f.write(str(node_ids[i])+',')
@@ -589,7 +589,7 @@ class CNARWconvergence_SamplingVanillaPython(GraphSampler):
         pass
 
 
-#cnarw修改为收敛后取点的采样算法，法二
+#cnarw修改为
 class CNARWconvergence2_SamplingVanillaPython(GraphSampler):
     """
     This class is to use cnarw to define sampler.
@@ -655,7 +655,7 @@ class CNARWconvergence2_SamplingVanillaPython(GraphSampler):
                     deg_next_root,next_root_nbhd = self.node_nbhd(next_node, self.adj_train.indices,self.adj_train.indptr)    
                     if deg_next_root != None:
                         com_Node = len(set(root_nbhd) & set(next_root_nbhd))  #求公共节点个数
-                        p_pick = 1 - com_Node/min(deg_root,deg_next_root)   #师弟写错了吧，是min 但师弟写的max
+                        p_pick = 1 - com_Node/min(deg_root,deg_next_root)   
                         if p_pick > p: 
                             #node_ids.append(next_node)  
                             if idepth > 1000:
@@ -664,7 +664,7 @@ class CNARWconvergence2_SamplingVanillaPython(GraphSampler):
             iroot = iroot + 1
         """
         #print each subgraph node id and save
-        print("node id:", len(node_ids))  #没去重没升序
+        print("node id:", len(node_ids))  
         with open('node_id.txt', 'a') as f:
             for i in range(len(node_ids)):
                 f.write(str(node_ids[i])+',')
@@ -747,7 +747,7 @@ class RW_SamplingVanillaPython(GraphSampler):
         
         '''
         #print each subgraph node id and save
-        print("rw node id:", len(node_ids))  #没去重没升序
+        print("rw node id:", len(node_ids))  
         with open('rw_node_id.txt', 'a') as f:
             for i in range(len(node_ids)):
                 f.write(str(node_ids[i])+',')
