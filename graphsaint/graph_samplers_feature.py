@@ -39,8 +39,8 @@ class GraphSampler:
     example sampler in pure python is provided as `NodeSamplingVanillaPython` at the
     bottom of this file.
     """
-    def __init__(self, adj_train, node_train, size_subgraph, args_preproc):  #原始
-    #def __init__(self, adj_train, class_arr, node_train, size_subgraph, args_preproc):  #我改
+    def __init__(self, adj_train, node_train, size_subgraph, args_preproc):  
+    #def __init__(self, adj_train, class_arr, node_train, size_subgraph, args_preproc):  
         """
         Inputs:
             adj_train       scipy sparse CSR matrix of the training graph
@@ -52,8 +52,8 @@ class GraphSampler:
             None
         """
         self.adj_train = adj_train
-        #self.feats = feats  #我多加的，读取input的输入特征
-        #self.class_arr = class_arr   #我多加的
+        #self.feats = feats  #读取input的输入特征
+        #self.class_arr = class_arr   #
         self.node_train = np.unique(node_train).astype(np.int32)
         # size in terms of number of vertices in subgraph
         self.size_subgraph = size_subgraph
@@ -434,7 +434,7 @@ class CNARW_SamplingVanillaPython_yuanshi(GraphSampler):
                 while idepth < self.size_depth:  #沿着该root，走size_depth步
                     next_node = 0
                     p = random.random()
-                    rand = random.randint(0,len(root_nbhd)-1)  #从邻居中取一个不为本身的节点？
+                    rand = random.randint(0,len(root_nbhd)-1)  
                     next_node = root_nbhd[rand]
                     #print('next_node:',next_node)
                     
@@ -442,7 +442,7 @@ class CNARW_SamplingVanillaPython_yuanshi(GraphSampler):
                         app_v = np.random.choice(self.node_train, 1)
                         while app_v in root:
                             app_v = np.random.choice(self.node_train, 1)
-                        root = np.concatenate((root,app_v))    #是自环,拼接上新的root，是不是不应该拼接，会变成一直无限拼接吗？
+                        root = np.concatenate((root,app_v))    
                         break
                     deg_next_root,next_root_nbhd = self.node_nbhd(next_node, self.adj_train.indices,self.adj_train.indptr)
                     if deg_next_root != None:
@@ -450,7 +450,7 @@ class CNARW_SamplingVanillaPython_yuanshi(GraphSampler):
                         p_pick = 1 - com_Node/min(deg_root,deg_next_root)
                         if p_pick > p:
                             node_ids.append(next_node)                    
-                            idepth = idepth + 1  #师弟写在这，我觉得应该写在下一行
+                            idepth = idepth + 1  
             iroot = iroot + 1
         """
         #print each subgraph node id and save
@@ -475,7 +475,7 @@ class CNARW_SamplingVanillaPython_yuanshi(GraphSampler):
         
 
         
-#Similarity-aware Random Walk for GNN, SARW   后来12月末提的改进算法
+#Similarity-aware Random Walk for GNN, SARW  
 class SARW_SamplingVanillaPython(GraphSampler):
     """
     This class is to use cnarw to define sampler.
@@ -484,8 +484,8 @@ class SARW_SamplingVanillaPython(GraphSampler):
         self.size_root = size_root
         self.size_depth = size_depth
         size_subgraph = size_root * size_depth
-        #super().__init__(adj_train, node_train, size_subgraph, {})  #原始
-        super().__init__(adj_train, class_arr, node_train, size_subgraph, {})   #我改
+        #super().__init__(adj_train, node_train, size_subgraph, {})  #
+        super().__init__(adj_train, class_arr, node_train, size_subgraph, {})   #
         
         
     '''
@@ -528,7 +528,7 @@ class SARW_SamplingVanillaPython(GraphSampler):
                 while idepth < self.size_depth:  #沿着该root，走size_depth步
                     #next_node = 0
                     p = random.random()
-                    rand = random.randint(0,deg_current_node-1)  #从邻居中取一个不为本身的节点？
+                    rand = random.randint(0,deg_current_node-1)  #
                     next_node = current_node_nbhd[rand]  #next_node_nbhd[rand]  
                     #print('next_node:',next_node)
 
@@ -557,7 +557,7 @@ class SARW_SamplingVanillaPython(GraphSampler):
                             node_ids.append(next_node)  
                             deg_current_node,current_node_nbhd = deg_next_node,next_node_nbhd
                             #print('node_ids:',node_ids)
-                            idepth = idepth + 1#师弟写在这，我觉得应该写在下一行，即使换成下面一行，也是抽样停不下来
+                            idepth = idepth + 1
                     #if idepth%500 == 0:
                         #print('len of node_ids:',len(node_ids))
                     #idepth = idepth + 1
@@ -588,7 +588,7 @@ class SARW_SamplingVanillaPython(GraphSampler):
 
     
         
-#CNARW_SamplingVanillaPython我改排查无限循环,侯琳琳改
+#CNARW_SamplingVanillaPython修改
 class CNARW_SamplingVanillaPython(GraphSampler):
     """
     This class is to use cnarw to define sampler.
@@ -640,7 +640,7 @@ class CNARW_SamplingVanillaPython(GraphSampler):
                 while idepth < self.size_depth:  #沿着该root，走size_depth步
                     #next_node = 0
                     p = random.random()
-                    rand = random.randint(0,deg_current_node-1)  #从邻居中取一个不为本身的节点？
+                    rand = random.randint(0,deg_current_node-1)  #
                     next_node = current_node_nbhd[rand]  #next_node_nbhd[rand]  
                     #print('next_node:',next_node)
 
@@ -653,7 +653,7 @@ class CNARW_SamplingVanillaPython(GraphSampler):
                             node_ids.append(next_node)  
                             deg_current_node,current_node_nbhd = deg_next_node,next_node_nbhd
                             #print('node_ids:',node_ids)
-                            idepth = idepth + 1#师弟写在这，我觉得应该写在下一行，即使换成下面一行，也是抽样停不下来
+                            idepth = idepth + 1
                     #if idepth%500 == 0:
                         #print('len of node_ids:',len(node_ids))
                     #idepth = idepth + 1
@@ -685,7 +685,7 @@ class CNARW_SamplingVanillaPython(GraphSampler):
 
 
 
-##cnarw修改为收敛后取点的采样算法，法一.CNARW_SamplingVanillaPython我改排查无限循环,侯琳琳改后
+##cnarw修改
 class CNARWconvergence_SamplingVanillaPython(GraphSampler):
     """
     This class is to use cnarw to define sampler.
@@ -746,14 +746,14 @@ class CNARWconvergence_SamplingVanillaPython(GraphSampler):
                     deg_next_node,next_node_nbhd = self.node_nbhd(next_node, self.adj_train.indices,self.adj_train.indptr)         
                     if deg_next_node != None:
                         com_Node = len(set(current_node_nbhd) & set(next_node_nbhd))  #求公共节点个数
-                        p_pick = 1 - com_Node/min(deg_current_node,deg_next_node)   #师弟写错了吧，是min 但师弟写的max
+                        p_pick = 1 - com_Node/min(deg_current_node,deg_next_node)   
                         if p_pick > p: 
                             #print('next_node:',next_node)
                             node_ids_long.append(next_node) 
                             deg_current_node,current_node_nbhd = deg_next_node,next_node_nbhd
                             idepth = idepth + 1
                             #print('node_ids_long:',node_ids_long)
-                node_ids_short = node_ids_long[50:]  #前50个节点不要，取后面的节点,depth=2  node_ids_long[-3:]
+                node_ids_short = node_ids_long[50:]  
                 node_ids.extend(node_ids_short)
                 
                     
